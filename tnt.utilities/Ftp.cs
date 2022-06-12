@@ -37,7 +37,7 @@ namespace TNT.Utilities
 		/// <summary>
 		/// Used to specify a proxy
 		/// </summary>
-		public IWebProxy Proxy { get; set; }
+		public IWebProxy? Proxy { get; set; }
 
 		/// <summary>
 		/// Constructor
@@ -113,7 +113,7 @@ namespace TNT.Utilities
 
 			using (FtpWebResponse response = (FtpWebResponse)request.GetResponse())
 			{
-				return response.StatusDescription;
+				return response.StatusDescription ?? "";
 			}
 		}
 
@@ -140,7 +140,7 @@ namespace TNT.Utilities
 			}
 
 			FtpWebResponse response = (FtpWebResponse)request.GetResponse();
-			statusDescription = response.StatusDescription;
+			statusDescription = response.StatusDescription ?? "";
 			return response.GetResponseStream();
 		}
 	}

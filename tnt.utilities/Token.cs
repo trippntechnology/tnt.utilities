@@ -30,7 +30,7 @@ namespace TNT.Utilities
 		/// <param name="length">Length of the token</param>
 		/// <param name="customCharacters">Characters that should be used to generate a token</param>
 		/// <returns>A token of <paramref name="length"/></returns>
-		public static string Create(int length, char[] customCharacters = null)
+		public static string Create(int length, char[]? customCharacters = null)
 		{
 			StringBuilder token = new StringBuilder();
 			string availableCharacters = customCharacters == null ? _Characters : string.Join(string.Empty, customCharacters);
@@ -50,7 +50,7 @@ namespace TNT.Utilities
 		/// <param name="sectionLength">Length of each section</param>
 		/// <param name="customCharacters">Characters that should be used to generate a token</param>
 		/// <returns>A token that has <paramref name="sectionCount"/> section each of length <paramref name="sectionLength"/></returns>
-		public static string Create(int sectionCount, int sectionLength, char[] customCharacters = null)
+		public static string Create(int sectionCount, int sectionLength, char[]? customCharacters = null)
 		{
 			List<string> sections = new List<string>();
 

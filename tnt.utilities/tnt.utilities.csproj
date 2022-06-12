@@ -1,35 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <OutputType>Library</OutputType>
-    <ShouldCreateLogs>True</ShouldCreateLogs>
-    <AdvancedSettingsExpanded>True</AdvancedSettingsExpanded>
-    <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
-    <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
-    <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
-    <UpdatePackageVersion>False</UpdatePackageVersion>
-    <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
-    <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <UseWindowsForms>true</UseWindowsForms>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DocumentationFile>bin\Debug\TNT.Utilities.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyInfo_Title>TNT Utilities</AssemblyInfo_Title>
-    <AssemblyInfo_MinorVersion>8</AssemblyInfo_MinorVersion>
-    <AssemblyInfo_PatchVersion>1</AssemblyInfo_PatchVersion>
-    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
-    <PackageReference Include="TNT.AssemblyInfo" Version="1.4.0" />
-    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.3.261602">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
-  </ItemGroup>
+
+	<PropertyGroup>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Version>2.0.0</Version>
+		<Authors>Tripp'n Technology, LLC.</Authors>
+		<PackageProjectUrl></PackageProjectUrl>
+		<Copyright>Copywrite $(Authors) 2022</Copyright>
+		<UseWindowsForms>true</UseWindowsForms>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<Configurations>Debug;Release;Debug_Nuget_Local</Configurations>
+		<Description>TNT Utility Classes</Description>
+		<Company>$(Authors)</Company>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+		<PackageReference Include="System.Management" Version="6.0.0" />
+	</ItemGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="echo SolutionDir: $(SolutionDir)&#xD;&#xA;echo SolutionExt: $(SolutionExt)&#xD;&#xA;echo SolutionFileName: $(SolutionFileName)&#xD;&#xA;echo SolutionName: $(SolutionName)&#xD;&#xA;echo SolutionPath: $(SolutionPath)&#xD;&#xA;echo ProjectDir: $(ProjectDir)&#xD;&#xA;echo ProjectExt: $(ProjectExt)&#xD;&#xA;echo ProjectFileName: $(ProjectFileName)&#xD;&#xA;echo ProjectName: $(ProjectName)&#xD;&#xA;echo ProjectPath: $(ProjectPath)&#xD;&#xA;echo Configuration: $(Configuration)&#xD;&#xA;echo FrameworkVersion: $(FrameworkVersion)&#xD;&#xA;echo OutDir: $(OutDir)&#xD;&#xA;echo Platform: $(Platform)&#xD;&#xA;echo PlatformShortName: $(PlatformShortName)&#xD;&#xA;&#xD;&#xA;echo TargetDir: $(TargetDir)&#xD;&#xA;echo TargetName: $(TargetName)&#xD;&#xA;echo TargetPath: $(TargetPath)&#xD;&#xA;&#xD;&#xA;echo  copy $(ProjectDir)bin\$(Configuration)\$(ProjectName).$(PackageVersion).nupkg D:\NugetRepo" />
+	</Target>
+	<Target Name="DeplyNugetLocal" AfterTargets="Pack" Condition="$(Configuration) == 'Debug_Nuget_Local'">
+		<Exec Command="copy $(ProjectDir)bin\$(Configuration)\$(ProjectName).$(PackageVersion).nupkg D:\NugetRepo" />
+	</Target>
 </Project>

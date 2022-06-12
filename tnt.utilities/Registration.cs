@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Management;
+﻿using System.Management;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -62,7 +60,7 @@ namespace TNT.Utilities
 				{
 					if (pd.Value != null && pd.Value.ToString() != "")
 					{
-						props[pd.Name] = pd.Value.ToString();
+						props[pd.Name] = pd.Value.ToString() ?? "";
 					}
 				}
 
@@ -77,11 +75,12 @@ namespace TNT.Utilities
 		/// </summary>
 		/// <param name="seed">String to hash</param>
 		/// <returns>SHA1 hash of seed</returns>
-		public static string GenerateSHA1Hash(string seed)
+		public static string? GenerateSHA1Hash(string seed)
 		{
 			byte[] seedBytes = ASCIIEncoding.ASCII.GetBytes(seed);
 			SHA1 sha1Hasher = System.Security.Cryptography.SHA1.Create();
 			sha1Hasher.ComputeHash(seedBytes);
+			if (sha1Hasher.Hash == null) return null;
 			return Convert.ToBase64String(sha1Hasher.Hash);
 		}
 
@@ -100,14 +99,14 @@ namespace TNT.Utilities
 				int ascii = m_CharacterGenerator.Next(65, 90);
 				sb.Append((char)ascii);
 
-				if (segmentSize == 1 && index < length-1)
+				if (segmentSize == 1 && index < length - 1)
 				{
 					sb.Append("-");
 				}
-				else if (segmentSize > 1 && segmentSize <= length/2 && (index+1) % segmentSize == 0 && index < length-1)
+				else if (segmentSize > 1 && segmentSize <= length / 2 && (index + 1) % segmentSize == 0 && index < length - 1)
 				{
 					sb.Append("-");
-					}
+				}
 			}
 
 			return sb.ToString();
@@ -128,7 +127,7 @@ namespace TNT.Utilities
 		/// </summary>
 		/// <param name="fileName">Location of file</param>
 		/// <returns><see cref="RegistrationKey"/></returns>
-		public static RegistrationKey GetRegistrationKey(string fileName)
+		public static RegistrationKey? GetRegistrationKey(string fileName)
 		{
 			return Utilities.DeserializeFromFile<RegistrationKey>(fileName);
 		}

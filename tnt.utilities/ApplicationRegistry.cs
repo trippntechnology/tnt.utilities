@@ -1,7 +1,4 @@
 ﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
 
 namespace TNT.Utilities
 {
@@ -45,18 +42,11 @@ namespace TNT.Utilities
 			form.FormClosing += FormClosing;
 			form.Load += FormLoad;
 		}
-		private void FormLoad(object sender, EventArgs e) => (sender as Form)?.Also(it => LoadFormState(it));
+		private void FormLoad(object? sender, EventArgs e) => (sender as Form)?.Also(it => LoadState(it));
 
-		private void FormClosing(object sender, FormClosingEventArgs e) => (sender as Form)?.Also(it => SaveFormState(it));
+		private void FormClosing(object? sender, FormClosingEventArgs e) => (sender as Form)?.Also(it => SaveState(it));
 
 		#region Save/Load Form State
-
-		/// <summary>
-		/// Saves several of the Form properties within the FormState key
-		/// </summary>
-		/// <param name="form">Form whose properties should be saved</param>
-		[Obsolete("Pass Form in constructor instead")]
-		public void SaveFormState(Form form) => SaveState(form);
 
 		private void SaveState(Form form)
 		{
@@ -75,13 +65,6 @@ namespace TNT.Utilities
 				}
 			}
 		}
-
-		/// <summary>
-		/// Loads the Form properties saved with SaveFormState
-		/// </summary>
-		/// <param name="form">Form whose properties are set by those set in the registry</param>
-		[Obsolete("Pass Form in constructor instead")]
-		public void LoadFormState(Form form) => LoadState(form);
 
 		private void LoadState(Form form)
 		{
@@ -132,7 +115,7 @@ namespace TNT.Utilities
 		/// <returns>Value associated with the name</returns>
 		public int ReadInteger(string name, int defValue)
 		{
-			object obj = BaseRegistryKey.GetValue(name);
+			object? obj = BaseRegistryKey.GetValue(name);
 
 			if (obj != null)
 			{
@@ -151,11 +134,11 @@ namespace TNT.Utilities
 		/// <returns>Value associated with the subkey and name</returns>
 		public int ReadInteger(string subKey, string name, int defValue)
 		{
-			RegistryKey rk = BaseRegistryKey.OpenSubKey(subKey);
+			RegistryKey? rk = BaseRegistryKey.OpenSubKey(subKey);
 
 			if (rk != null)
 			{
-				object obj = rk.GetValue(name);
+				object? obj = rk.GetValue(name);
 
 				if (obj != null)
 				{
@@ -200,12 +183,8 @@ namespace TNT.Utilities
 		/// <returns>Value associated with the name</returns>
 		public string ReadString(string name, string defValue)
 		{
-			object obj = BaseRegistryKey.GetValue(name);
-
-			if (obj != null)
-			{
-				defValue = obj.ToString();
-			}
+			object? obj = BaseRegistryKey.GetValue(name);
+			defValue = obj?.ToString() ?? defValue;
 
 			return defValue;
 		}
@@ -219,16 +198,12 @@ namespace TNT.Utilities
 		/// <returns>Value associated with the subkey and name</returns>
 		public string ReadString(string subKey, string name, string defValue)
 		{
-			RegistryKey rk = BaseRegistryKey.OpenSubKey(subKey);
+			RegistryKey? rk = BaseRegistryKey.OpenSubKey(subKey);
 
 			if (rk != null)
 			{
-				object obj = rk.GetValue(name);
-
-				if (obj != null)
-				{
-					defValue = obj.ToString();
-				}
+				object? obj = rk.GetValue(name);
+				defValue = obj?.ToString() ?? defValue;
 			}
 
 			return defValue;
@@ -268,7 +243,7 @@ namespace TNT.Utilities
 		/// <returns>Boolean value associated with name</returns>
 		public bool ReadBoolean(string name, bool defValue)
 		{
-			object obj = BaseRegistryKey.GetValue(name);
+			object? obj = BaseRegistryKey.GetValue(name);
 
 			if (obj != null)
 			{
@@ -287,11 +262,11 @@ namespace TNT.Utilities
 		/// <returns>Boolean value associated with subkey and name</returns>
 		public bool ReadBoolean(string subKey, string name, bool defValue)
 		{
-			RegistryKey rk = BaseRegistryKey.OpenSubKey(subKey);
+			RegistryKey? rk = BaseRegistryKey.OpenSubKey(subKey);
 
 			if (rk != null)
 			{
-				object obj = rk.GetValue(name);
+				object? obj = rk.GetValue(name);
 
 				if (obj != null)
 				{
@@ -350,7 +325,7 @@ namespace TNT.Utilities
 			// Added the list
 			for (int index = 0; index < list.Count; index++)
 			{
-				rk.SetValue(index.ToString(), list[index]);
+				rk.SetValue(index.ToString(), list[index]!);
 			}
 		}
 
@@ -364,12 +339,12 @@ namespace TNT.Utilities
 		{
 			List<T> list = new List<T>();
 
-			RegistryKey rk = BaseRegistryKey.OpenSubKey(name);
+			RegistryKey? rk = BaseRegistryKey.OpenSubKey(name);
 
 			if (rk != null)
 			{
 				int valueIndex = 0;
-				object value = rk.GetValue(valueIndex.ToString());
+				object? value = rk.GetValue(valueIndex.ToString());
 
 				while (value != null)
 				{
@@ -440,9 +415,9 @@ namespace TNT.Utilities
 		/// </summary>
 		/// <param name="name">Name of registry key</param>
 		/// <returns>Byte array</returns>
-		public byte[] ReadBytes(string name)
+		public byte[]? ReadBytes(string name)
 		{
-			return (byte[])BaseRegistryKey.GetValue(name);
+			return BaseRegistryKey.GetValue(name) as Byte[];
 		}
 
 		#endregion
@@ -454,6 +429,7 @@ namespace TNT.Utilities
 		/// </summary>
 		/// <param name="name">Name of registry key</param>
 		/// <param name="obj">Object to write</param>
+		[Obsolete("BinaryFormatter.Deserialize is Obsolete. It is recommended other serialization methods be used.")]
 		public void WriteObject(string name, object obj)
 		{
 			byte[] bytes = Utilities.ToByteArray(obj);
@@ -466,9 +442,10 @@ namespace TNT.Utilities
 		/// <typeparam name="T">Type of object</typeparam>
 		/// <param name="name">Name of registry key</param>
 		/// <returns>Object from the registry</returns>
-		public T ReadObject<T>(string name)
+		[Obsolete("BinaryFormatter.Deserialize is Obsolete. It is recommended other serialization methods be used.")]
+		public T? ReadObject<T>(string name)
 		{
-			byte[] bytes = ReadBytes(name);
+			byte[]? bytes = ReadBytes(name);
 			return Utilities.FromByteArray<T>(bytes);
 		}
 

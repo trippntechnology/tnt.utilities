@@ -9,21 +9,21 @@ namespace TNT.Utilities
 		/// <summary>
 		/// Authorization component
 		/// </summary>
-		public string Authorization { get; set; }
+		public string? Authorization { get; set; }
 
 		/// <summary>
 		/// License component
 		/// </summary>
-		public string License { get; set; }
+		public string? License { get; set; }
 
 		/// <summary>
 		/// Determines if two <see cref="RegistrationKey"/> objects are equal
 		/// </summary>
 		/// <param name="obj">Object to compare</param>
 		/// <returns>True if equal, false otherwise</returns>
-		public override bool Equals(object obj)
+		public override bool Equals(object? obj)
 		{
-			RegistrationKey regKey = obj as RegistrationKey;
+			RegistrationKey? regKey = obj as RegistrationKey;
 			return regKey != null && this.Authorization == regKey.Authorization && this.License == regKey.License;
 		}
 

@@ -8,7 +8,7 @@ namespace TNT.Utilities
 	/// </summary>
 	public class MutexWrapper
 	{
-		private Mutex mutex = null;
+		private Mutex? mutex = null;
 
 		/// <summary>
 		/// Initialization constructor
@@ -32,7 +32,7 @@ namespace TNT.Utilities
 			{
 				try
 				{
-					if (!mutex.WaitOne(waitTimeout))
+					if (mutex?.WaitOne(waitTimeout) == false)
 					{
 						throw new Exception("Unable to obtain mutex");
 					}
@@ -48,7 +48,7 @@ namespace TNT.Utilities
 			{
 				if (mutexObtained)
 				{
-					mutex.ReleaseMutex();
+					mutex?.ReleaseMutex();
 				}
 			}
 		}

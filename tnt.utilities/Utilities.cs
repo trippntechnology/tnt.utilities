@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -46,13 +41,13 @@ namespace TNT.Utilities
 		/// <param name="content">XML content</param>
 		/// <param name="expectedTypes">Expected types referenced during the deserialization</param>
 		/// <returns>Object created from the content</returns>
-		public static T Deserialize<T>(string content, Type[] expectedTypes)
+		public static T? Deserialize<T>(string content, Type[] expectedTypes)
 		{
 			using (StringReader sr = new StringReader(content))
 			using (XmlTextReader tr = new XmlTextReader(sr))
 			{
 				XmlSerializer deser = new XmlSerializer(typeof(T), expectedTypes);
-				return (T)deser.Deserialize(tr);
+				return (T?)deser.Deserialize(tr);
 			}
 		}
 
@@ -77,12 +72,12 @@ namespace TNT.Utilities
 		/// <typeparam name="T">Type of object expected to be deserialized</typeparam>
 		/// <param name="fileName">File where object resides</param>
 		/// <returns>Object of type T </returns>
-		public static T DeserializeFromFile<T>(string fileName)
+		public static T? DeserializeFromFile<T>(string fileName)
 		{
 			using (TextReader textReader = new StreamReader(fileName))
 			{
 				XmlSerializer serializer = new XmlSerializer(typeof(T));
-				return (T)serializer.Deserialize(textReader);
+				return (T?)serializer.Deserialize(textReader);
 			}
 		}
 
@@ -91,9 +86,10 @@ namespace TNT.Utilities
 		/// </summary>
 		/// <param name="obj">Object to convert</param>
 		/// <returns>Byte array representing the object</returns>
+		[Obsolete("BinaryFormatter.Deserialize is Obsolete. It is recommended other serialization methods be used.")]
 		public static byte[] ToByteArray(object obj)
 		{
-			byte[] bytes = null;
+			byte[]? bytes = null;
 
 			using (MemoryStream ms = new MemoryStream())
 			{
@@ -113,8 +109,10 @@ namespace TNT.Utilities
 		/// <typeparam name="T">Type of object bytes represent</typeparam>
 		/// <param name="bytes">Byte array of object</param>
 		/// <returns>Object of type T from the byte array</returns>
-		public static T FromByteArray<T>(byte[] bytes)
+		[Obsolete("BinaryFormatter.Deserialize is Obsolete. It is recommended other serialization methods be used.")]
+		public static T? FromByteArray<T>(byte[]? bytes)
 		{
+			if (bytes == null) return default(T);
 			using (MemoryStream ms = new MemoryStream(bytes))
 			{
 				ms.Position = 0;
@@ -144,7 +142,7 @@ namespace TNT.Utilities
 		/// <param name="assemblyName">Assembly where name space exists</param>
 		/// <param name="baseType">Base class of the class names returned</param>
 		/// <returns>List of class names contained within a name space with the specified base type</returns>
-		public static List<string> GetNameSpaceClasses(string nameSpace, string assemblyName, Type baseType)
+		public static List<string> GetNameSpaceClasses(string nameSpace, string assemblyName, Type? baseType)
 		{
 			List<string> classList = new List<string>();
 			Assembly ass = Assembly.LoadFrom(assemblyName);
@@ -162,39 +160,6 @@ namespace TNT.Utilities
 		#endregion
 
 		#region GetNameSpaceTypes
-
-		/// <summary>
-		/// Returns a list of types contained within a name space
-		/// </summary>
-		/// <param name="nameSpace">Name space where types reside</param>
-		/// <param name="assemblyName">Assembly where name space exists</param>
-		/// <returns>Array of types within the name space</returns>
-		[Obsolete("Use GetTypes instead.")]
-		public static Type[] GetNameSpaceTypes(string nameSpace, string assemblyName)
-		{
-			return GetNameSpaceTypes(nameSpace, assemblyName, null);
-		}
-
-		/// <summary>
-		/// Returns a list of types contained within a name space with the specified base type
-		/// </summary>
-		/// <param name="nameSpace">Name space where types reside</param>
-		/// <param name="assemblyName">Assembly where name space exists</param>
-		/// <param name="baseType">Base type of the types returned</param>
-		/// <returns>Array of types derived from the base type within the name space</returns>
-		[Obsolete("Use GetTypes instead.")]
-		public static Type[] GetNameSpaceTypes(string nameSpace, string assemblyName, Type baseType)
-		{
-			List<Type> types = new List<Type>();
-			Assembly ass = Assembly.LoadFile(assemblyName);
-
-			if (ass != null)
-			{
-				types = (from t in ass.GetTypes() where t.Namespace == nameSpace && !t.IsAbstract && t.InheritsFrom(baseType) select t).ToList<Type>();
-			}
-
-			return types.ToArray();
-		}
 
 		/// <summary>
 		/// Returns a list of types matching <paramref name="filter"/> within assembly referenced by <paramref name="assemblyName"/>
@@ -223,18 +188,18 @@ namespace TNT.Utilities
 		/// <typeparam name="T">Attribute's type</typeparam>
 		/// <param name="assembly">Assembly</param>
 		/// <returns>Assembly attribute of the given type if exists, null otherwise</returns>
-		public static T GetAssemblyAttribute<T>(Assembly assembly) where T : Attribute
+		public static T? GetAssemblyAttribute<T>(Assembly assembly) where T : Attribute
 		{
 			if (assembly == null)
 			{
-				return null;
+				return default;
 			}
 
 			object[] attributes = assembly.GetCustomAttributes(typeof(T), true);
 
 			if (attributes == null || attributes.Length == 0)
 			{
-				return null;
+				return default;
 			}
 
 			return (T)attributes[0];
@@ -276,21 +241,25 @@ namespace TNT.Utilities
 		/// </summary>
 		/// <param name="resourceName">Reference to the resource</param>
 		/// <returns>Cursor</returns>
-		public static Cursor LoadColorCursor(string resourceName)
+		public static Cursor? LoadColorCursor(string resourceName)
 		{
 			// Get the name of a temporary file
 			string path = Path.GetTempFileName();
 
 			// Put the resource into a stream and save it to a file
-			using (Stream s = Assembly.GetCallingAssembly().GetManifestResourceStream(resourceName))
-			using (FileStream fs = File.Create(path, (int)s.Length))
+			using (Stream? s = Assembly.GetCallingAssembly().GetManifestResourceStream(resourceName))
 			{
-				// Fill the bytes[] array with the stream data         
-				byte[] bytesInStream = new byte[s.Length];
-				s.Read(bytesInStream, 0, (int)bytesInStream.Length);
+				if (s == null) return null;
 
-				// Use FileStream object to write to the specified file         
-				fs.Write(bytesInStream, 0, bytesInStream.Length);
+				using (FileStream fs = File.Create(path, (int)s.Length))
+				{
+					// Fill the bytes[] array with the stream data         
+					byte[] bytesInStream = new byte[s.Length];
+					s.Read(bytesInStream, 0, bytesInStream.Length);
+
+					// Use FileStream object to write to the specified file         
+					fs.Write(bytesInStream, 0, bytesInStream.Length);
+				}
 			}
 
 			// Load the cursor from the file and delete file
@@ -311,7 +280,7 @@ namespace TNT.Utilities
 		/// <param name="thisBaseType">Type that is being check</param>
 		/// <param name="baseType">Base type we're lookin for</param>
 		/// <returns></returns>
-		public static bool InheritsFrom(this Type thisBaseType, Type baseType)
+		public static bool InheritsFrom(this Type thisBaseType, Type? baseType)
 		{
 			bool rtnValue = false;
 
@@ -329,7 +298,7 @@ namespace TNT.Utilities
 				else
 				{
 					// Check if base type is further down the inheritance list
-					if (thisBaseType.BaseType.BaseType != null)
+					if (thisBaseType.BaseType?.BaseType != null)
 					{
 						rtnValue = thisBaseType.BaseType.InheritsFrom(baseType);
 					}

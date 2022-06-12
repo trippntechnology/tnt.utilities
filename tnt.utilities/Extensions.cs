@@ -31,5 +31,18 @@ namespace TNT.Utilities
 			action(it);
 			return it;
 		}
+
+		/// <summary>
+		/// Calls <paramref name="action"/> when <typeparamref name="T1"/> can be cast to <typeparamref name="T2"/> and 
+		/// passes<typeparamref name="T2"/> to <paramref name="action"/>
+		/// </summary>
+		/// <typeparam name="T1">Base type</typeparam>
+		/// <typeparam name="T2">Super type</typeparam>
+		/// <param name="obj">Object that needs to be cast</param>
+		/// <param name="action">Action to take </param>
+		public static void whenType<T1, T2>(this T1 obj, Action<T2> action)
+		{
+			if (obj is T2 value) action(value);
+		}
 	}
 }
