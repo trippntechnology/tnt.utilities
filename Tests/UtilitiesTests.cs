@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using Tests.Resources;
 using TNT.Utilities;
 
 namespace Tests;
@@ -84,9 +85,9 @@ public class UtilitiesTests
 	{
 		string assemblyFile = $"{AppDomain.CurrentDomain.BaseDirectory}\\TNT.Utilities.dll";
 
-		var types = Utilities.GetTypes(assemblyFile, t => { return true; });
+		var types = Utilities.GetTypes(assemblyFile, t => { return t.Namespace?.StartsWith("TNT.Utilities") ?? false; });
 
-		Assert.Equal(18, types.Length);
+		Assert.Equal(15, types.Length);
 
 		types = Utilities.GetTypes(assemblyFile, t =>
 		{
@@ -94,5 +95,35 @@ public class UtilitiesTests
 		});
 
 		Assert.Equal(11, types.Length);
+	}
+
+	[Fact]
+	public void Utilities_Serialize_Deserialize_Test()
+	{
+		var listClassPre = new ListClass();
+		listClassPre.Add(new ExtendedClass1 { e1IntProperty = 1, e1StringProperty = "one", baseIntProperty = -1, baseStringProperty = "base1" });
+		listClassPre.Add(new ExtendedClass2 { e2IntProperty = 2, e2StringProperty = "two", baseIntProperty = -2, baseStringProperty = "base2" });
+
+		var types = new Type[] { typeof(ExtendedClass1), typeof(ExtendedClass2) };
+
+		var str = Utilities.Serialize(listClassPre, types);
+
+		var listClassPost = Utilities.Deserialize<ListClass>(str, types);
+
+		var extClass1 = listClassPost[0] as ExtendedClass1;
+		var extClass2 = listClassPost[1] as ExtendedClass2;
+
+		Assert.NotNull(extClass1);
+		Assert.NotNull(extClass2);
+
+		Assert.Equal(1, extClass1.e1IntProperty);
+		Assert.Equal("one", extClass1.e1StringProperty);
+		Assert.Equal(-1, extClass1.baseIntProperty);
+		Assert.Equal("base1", extClass1.baseStringProperty);
+
+		Assert.Equal(2, extClass2.e2IntProperty);
+		Assert.Equal("two", extClass2.e2StringProperty);
+		Assert.Equal(-2, extClass2.baseIntProperty);
+		Assert.Equal("base2", extClass2.baseStringProperty);
 	}
 }

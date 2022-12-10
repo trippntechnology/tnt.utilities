@@ -117,6 +117,7 @@ public class ApplicationRegistryTests
 			Assert.Equal(defValue, appReg.ReadString(subKeyName, keyName, defValue));
 
 			appReg.WriteString(subKeyName, keyName, value);
+			Assert.Equal(defValue, appReg.ReadString(subKeyName, "invalid_key", defValue));
 			Assert.Equal(value, appReg.ReadString(subKeyName, keyName, defValue));
 		}
 		catch (Exception ex)

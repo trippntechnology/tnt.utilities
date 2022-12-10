@@ -26,7 +26,7 @@ public class RegistrationTests
 		Assert.False(Registration.ValidateHash("Bogus seed", "OPAPhzjiQdrqbzf29VroQU17Ahk="));
 	}
 
-	[Fact]
+	//[Fact]
 	public void GetVolumeSerialNumberTest()
 	{
 		var serialNumber = Registration.GetVolumeSerialNumber();

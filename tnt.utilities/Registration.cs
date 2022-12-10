@@ -32,7 +32,7 @@ namespace TNT.Utilities
 		public static string GetVolumeSerialNumber()
 		{
 			string result = string.Empty;
-			ManagementObjects mos = Registration.GetManagementObjects("select * from win32_logicaldisk where Description = 'Local Fixed Disk' and VolumeSerialNumber is not null");
+			ManagementObjects mos = GetManagementObjects("select * from win32_logicaldisk where Description = 'Local Fixed Disk' and VolumeSerialNumber is not null");
 
 			if (mos.Count > 0)
 			{

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using System.Diagnostics.CodeAnalysis;
 
 namespace TNT.Utilities
 {
@@ -42,8 +43,11 @@ namespace TNT.Utilities
 			form.FormClosing += FormClosing;
 			form.Load += FormLoad;
 		}
+
+		[ExcludeFromCodeCoverage]
 		private void FormLoad(object? sender, EventArgs e) => (sender as Form)?.Also(it => LoadState(it));
 
+		[ExcludeFromCodeCoverage]
 		private void FormClosing(object? sender, FormClosingEventArgs e) => (sender as Form)?.Also(it => SaveState(it));
 
 		#region Save/Load Form State
