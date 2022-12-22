@@ -8,45 +8,45 @@ namespace Tests;
 [ExcludeFromCodeCoverage]
 public class UtilitiesTests
 {
-	[Fact]
+	[Test]
 	public void Utilities_GetAssemblyAttribute_Test()
 	{
 		Assembly asm = Assembly.LoadFrom(@"tests.dll");
 
-		Assert.NotNull(asm);
+		Assert.That(asm, Is.Not.Null);
 
 		Attribute? attr = Utilities.GetAssemblyAttribute<AssemblyCompanyAttribute>(asm);
-		Assert.Equal("Company", (attr as AssemblyCompanyAttribute)?.Company);
+		Assert.That((attr as AssemblyCompanyAttribute)?.Company, Is.EqualTo("Company"));
 
 		attr = Utilities.GetAssemblyAttribute<AssemblyConfigurationAttribute>(asm);
-		Assert.Equal("Debug", (attr as AssemblyConfigurationAttribute)?.Configuration);
+		Assert.That((attr as AssemblyConfigurationAttribute)?.Configuration, Is.EqualTo("Debug"));
 
 		attr = Utilities.GetAssemblyAttribute<AssemblyCopyrightAttribute>(asm);
-		Assert.Equal("Copyright", (attr as AssemblyCopyrightAttribute)?.Copyright);
+		Assert.That((attr as AssemblyCopyrightAttribute)?.Copyright, Is.EqualTo("Copyright"));
 
 		attr = Utilities.GetAssemblyAttribute<AssemblyDescriptionAttribute>(asm);
-		Assert.Equal("Description", (attr as AssemblyDescriptionAttribute)?.Description);
+		Assert.That((attr as AssemblyDescriptionAttribute)?.Description, Is.EqualTo("Description"));
 
 		attr = Utilities.GetAssemblyAttribute<AssemblyFileVersionAttribute>(asm);
-		Assert.Equal("3.3.3.3", (attr as AssemblyFileVersionAttribute)?.Version);
+		Assert.That((attr as AssemblyFileVersionAttribute)?.Version, Is.EqualTo("3.3.3.3"));
 
 		//attr = Utilities.GetAssemblyAttribute<AssemblyInformationalVersionAttribute>(asm);
-		//Assert.Equal("3.3.3.3", (attr as AssemblyInformationalVersionAttribute).InformationalVersion);
+		//Assert.AreEqual("3.3.3.3", (attr as AssemblyInformationalVersionAttribute).InformationalVersion);
 
 		attr = Utilities.GetAssemblyAttribute<AssemblyTitleAttribute>(asm);
-		Assert.Equal("Tests", (attr as AssemblyTitleAttribute)?.Title);
+		Assert.That((attr as AssemblyTitleAttribute)?.Title, Is.EqualTo("Tests"));
 
 		//attr = Utilities.GetAssemblyAttribute<AssemblyVersionAttribute>(asm);
-		//Assert.Equal("3.3.3.3", (attr as AssemblyVersionAttribute).Version);
+		//Assert.AreEqual("3.3.3.3", (attr as AssemblyVersionAttribute).Version);
 
 		attr = Utilities.GetAssemblyAttribute<AssemblyProductAttribute>(asm);
-		Assert.Equal("Product", (attr as AssemblyProductAttribute)?.Product);
+		Assert.That((attr as AssemblyProductAttribute)?.Product, Is.EqualTo("Product"));
 
 		//attr = Utilities.GetAssemblyAttribute<GuidAttribute>(asm);
-		//Assert.Equal("eae4b166-b50f-4f09-aa59-23d18cfb4c5a", (attr as GuidAttribute).Value);
+		//Assert.AreEqual("eae4b166-b50f-4f09-aa59-23d18cfb4c5a", (attr as GuidAttribute).Value);
 	}
 
-	[Fact]
+	[Test]
 	public void Utilities_SerializeDeserialize_Tests()
 	{
 		RegistrationKey regKey = new RegistrationKey() { Authorization = "AuthorizationKey", License = "LicenseKey" };
@@ -55,7 +55,7 @@ public class UtilitiesTests
 		Utilities.SerializeToFile(regKey, fileName);
 		RegistrationKey? regKey1 = Utilities.DeserializeFromFile<RegistrationKey>(fileName);
 
-		Assert.Equal(regKey, regKey1);
+		Assert.That(regKey1, Is.EqualTo(regKey));
 
 		try
 		{
@@ -64,7 +64,7 @@ public class UtilitiesTests
 		}
 		catch (Exception ex)
 		{
-			Assert.IsType<InvalidOperationException>(ex);
+			Assert.That(ex is InvalidOperationException, Is.True);
 		}
 
 		File.Delete(fileName);
@@ -76,28 +76,25 @@ public class UtilitiesTests
 		}
 		catch (Exception ex)
 		{
-			Assert.IsType<FileNotFoundException>(ex);
+			Assert.That(ex is FileNotFoundException, Is.True);
 		}
 	}
 
-	[Fact]
+	[Test]
 	public void Utilities_GetTypes_Test()
 	{
 		string assemblyFile = $"{AppDomain.CurrentDomain.BaseDirectory}\\TNT.Utilities.dll";
 
 		var types = Utilities.GetTypes(assemblyFile, t => { return t.Namespace?.StartsWith("TNT.Utilities") ?? false; });
 
-		Assert.Equal(15, types.Length);
+		Assert.That(types.Length, Is.EqualTo(15));
 
-		types = Utilities.GetTypes(assemblyFile, t =>
-		{
-			return t.IsVisible;
-		});
+		types = Utilities.GetTypes(assemblyFile, t => t.IsVisible);
 
-		Assert.Equal(11, types.Length);
+		Assert.That(types.Length, Is.EqualTo(11));
 	}
 
-	[Fact]
+	[Test]
 	public void Utilities_Serialize_Deserialize_Test()
 	{
 		var listClassPre = new ListClass();
@@ -108,22 +105,22 @@ public class UtilitiesTests
 
 		var str = Utilities.Serialize(listClassPre, types);
 
-		var listClassPost = Utilities.Deserialize<ListClass>(str, types);
+		var listClassPost = Utilities.Deserialize<ListClass>(str, types) ?? new ListClass();
 
 		var extClass1 = listClassPost[0] as ExtendedClass1;
 		var extClass2 = listClassPost[1] as ExtendedClass2;
 
-		Assert.NotNull(extClass1);
-		Assert.NotNull(extClass2);
+		Assert.That(extClass1, Is.Not.Null);
+		Assert.That(extClass2, Is.Not.Null);
 
-		Assert.Equal(1, extClass1.e1IntProperty);
-		Assert.Equal("one", extClass1.e1StringProperty);
-		Assert.Equal(-1, extClass1.baseIntProperty);
-		Assert.Equal("base1", extClass1.baseStringProperty);
+		Assert.That(extClass1.e1IntProperty, Is.EqualTo(1));
+		Assert.That(extClass1.e1StringProperty, Is.EqualTo("one"));
+		Assert.That(extClass1.baseIntProperty, Is.EqualTo(-1));
+		Assert.That(extClass1.baseStringProperty, Is.EqualTo("base1"));
 
-		Assert.Equal(2, extClass2.e2IntProperty);
-		Assert.Equal("two", extClass2.e2StringProperty);
-		Assert.Equal(-2, extClass2.baseIntProperty);
-		Assert.Equal("base2", extClass2.baseStringProperty);
+		Assert.That(extClass2.e2IntProperty, Is.EqualTo(2));
+		Assert.That(extClass2.e2StringProperty, Is.EqualTo("two"));
+		Assert.That(extClass2.baseIntProperty, Is.EqualTo(-2));
+		Assert.That(extClass2.baseStringProperty, Is.EqualTo("base2"));
 	}
 }

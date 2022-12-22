@@ -39,7 +39,7 @@ public class ApplicationRegistryTests
 			: new ApplicationRegistry(form, currentUser, coName, appName);
 	}
 
-	[Fact]
+	[Test]
 	public void ReadWriteBoolean()
 	{
 		try
@@ -71,7 +71,7 @@ public class ApplicationRegistryTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public void ReadWriteInt()
 	{
 		try
@@ -81,15 +81,15 @@ public class ApplicationRegistryTests
 			string keyName = "IntegerTest";
 			string subKeyName = "SubKey";
 
-			Assert.Equal(12, appReg.ReadInteger(keyName, 12));
+			Assert.That(appReg.ReadInteger(keyName, 12), Is.EqualTo(12));
 
 			appReg.WriteInteger(keyName, 25);
-			Assert.Equal(25, appReg.ReadInteger(keyName, 12));
+			Assert.That(appReg.ReadInteger(keyName, 12), Is.EqualTo(25));
 
-			Assert.Equal(12, appReg.ReadInteger(subKeyName, keyName, 12));
+			Assert.That(appReg.ReadInteger(subKeyName, keyName, 12), Is.EqualTo(12));
 
 			appReg.WriteInteger(subKeyName, keyName, 25);
-			Assert.Equal(25, appReg.ReadInteger(subKeyName, keyName, 12));
+			Assert.That(appReg.ReadInteger(subKeyName, keyName, 12), Is.EqualTo(25));
 		}
 		catch (Exception ex)
 		{
@@ -97,7 +97,7 @@ public class ApplicationRegistryTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public void ReadWriteString()
 	{
 		try
@@ -109,24 +109,24 @@ public class ApplicationRegistryTests
 			string value = "Test String";
 			string defValue = "Default value";
 
-			Assert.Equal(defValue, appReg.ReadString(keyName, defValue));
+			Assert.That(appReg.ReadString(keyName, defValue), Is.EqualTo(defValue));
 
 			appReg.WriteString(keyName, value);
-			Assert.Equal(value, appReg.ReadString(keyName, defValue));
+			Assert.That(appReg.ReadString(keyName, defValue), Is.EqualTo(value));
 
-			Assert.Equal(defValue, appReg.ReadString(subKeyName, keyName, defValue));
+			Assert.That(appReg.ReadString(subKeyName, keyName, defValue), Is.EqualTo(defValue));
 
 			appReg.WriteString(subKeyName, keyName, value);
-			Assert.Equal(defValue, appReg.ReadString(subKeyName, "invalid_key", defValue));
-			Assert.Equal(value, appReg.ReadString(subKeyName, keyName, defValue));
+			Assert.That(appReg.ReadString(subKeyName, "invalid_key", defValue), Is.EqualTo(defValue));
+			Assert.That(appReg.ReadString(subKeyName, keyName, defValue), Is.EqualTo(value));
 		}
 		catch (Exception ex)
 		{
-			Assert.True(false, ex.Message);
+			Assert.Fail(ex.Message);
 		}
 	}
 
-	[Fact]
+	[Test]
 	public void ReadWriteStringList()
 	{
 		try
@@ -135,21 +135,21 @@ public class ApplicationRegistryTests
 
 			string keyName = "StringListTest";
 
-			Assert.Equal(appReg.ReadStringList(keyName).Count, 0);
+			Assert.That(appReg.ReadStringList(keyName).Count, Is.EqualTo(0));
 
 			List<string> expected = new List<string>(new string[] { "one", "two", "three", "four", "five" });
 
 			appReg.WriteStringList(keyName, expected);
 
-			Equals(expected, appReg.ReadStringList(keyName));
+			Assert.That(appReg.ReadStringList(keyName), Is.EqualTo(expected));
 		}
 		catch (Exception ex)
 		{
-			Assert.True(false, ex.Message);
+			Assert.Fail(ex.Message);
 		}
 	}
 
-	[Fact]
+	[Test]
 	public void ReadWriteIntList()
 	{
 		try
@@ -157,13 +157,13 @@ public class ApplicationRegistryTests
 			var appReg = createAppReg();
 
 			string keyName = "IntegerListTest";
-			Assert.Equal(appReg.ReadList<int>(keyName).Count, 0);
+			Assert.That(appReg.ReadList<int>(keyName).Count, Is.EqualTo(0));
 
 			List<int> expected = new List<int>(new int[] { -2, -1, 0, 1, 2 });
 
 			appReg.WriteList(keyName, expected);
 
-			Equals(expected, appReg.ReadList<int>(keyName));
+			Assert.That(appReg.ReadList<int>(keyName), Is.EqualTo(expected));
 		}
 		catch (Exception ex)
 		{
@@ -171,7 +171,7 @@ public class ApplicationRegistryTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public void ReadWriteToolStripItems()
 	{
 		try
@@ -193,20 +193,20 @@ public class ApplicationRegistryTests
 
 			appReg.ReadToolStripItems(keyName, newTSIC);
 
-			Assert.Equal(tsic.Count, newTSIC.Count);
+			Assert.That(newTSIC.Count, Is.EqualTo(tsic.Count));
 
 			for (int index = 0; index < tsic.Count; index++)
 			{
-				Assert.Equal(tsic[index].Text, newTSIC[index].Text);
+				Assert.That(newTSIC[index].Text, Is.EqualTo(tsic[index].Text));
 			}
 		}
 		catch (Exception ex)
 		{
-			Assert.True(false, ex.Message);
+			Assert.Fail(ex.Message);
 		}
 	}
 
-	[Fact]
+	[Test]
 	public void LoadSaveFormState()
 	{
 		try
@@ -230,19 +230,19 @@ public class ApplicationRegistryTests
 			appReg = createAppReg(testForm2);
 			testForm2.Show();
 
-			Assert.Equal(testForm1.Width, testForm2.Width);
-			Assert.Equal(testForm1.Height, testForm2.Height);
-			Assert.Equal(testForm1.Top, testForm2.Top);
-			Assert.Equal(testForm1.Left, testForm2.Left);
-			Assert.Equal(testForm1.WindowState, testForm2.WindowState);
+			Assert.That(testForm2.Width, Is.EqualTo(testForm1.Width));
+			Assert.That(testForm2.Height, Is.EqualTo(testForm1.Height));
+			Assert.That(testForm2.Top, Is.EqualTo(testForm1.Top));
+			Assert.That(testForm2.Left, Is.EqualTo(testForm1.Left));
+			Assert.That(testForm2.WindowState, Is.EqualTo(testForm1.WindowState));
 		}
 		catch (Exception ex)
 		{
-			Assert.True(false, ex.Message);
+			Assert.Fail(ex.Message);
 		}
 	}
 
-	[Fact]
+	[Test]
 	public void ReadWriteBytes()
 	{
 		try
@@ -262,7 +262,7 @@ public class ApplicationRegistryTests
 
 			string readString = Encoding.UTF8.GetString(readBytes!);
 
-			Assert.Equal(keyName, readString);
+			Assert.That(readString, Is.EqualTo(keyName));
 		}
 		catch (Exception ex)
 		{
@@ -270,7 +270,7 @@ public class ApplicationRegistryTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public void ReadWriteObject()
 	{
 		try
@@ -289,7 +289,7 @@ public class ApplicationRegistryTests
 
 			TestObject? newTO = appReg.ReadObject<TestObject>(keyName);
 
-			Assert.Equal(to, newTO);
+			Assert.That(newTO, Is.EqualTo(to));
 		}
 		catch (Exception ex)
 		{

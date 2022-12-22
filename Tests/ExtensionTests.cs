@@ -6,7 +6,7 @@ namespace Tests;
 [ExcludeFromCodeCoverage]
 public class ExtensionTests
 {
-	[Fact]
+	[Test]
 	public void Extensions_Let()
 	{
 		var result = new FooExtension() { Value = 7 }.Let(it =>
@@ -15,10 +15,10 @@ public class ExtensionTests
 			return 20;
 		});
 
-		Assert.Equal(20, result);
+		Assert.That(result, Is.EqualTo(20));
 	}
 
-	[Fact]
+	[Test]
 	public void Extensions_Also()
 	{
 		var result = new FooExtension() { Value = 7 }.Also(it =>
@@ -26,10 +26,10 @@ public class ExtensionTests
 		 it.Value = 10;
 	 });
 
-		Assert.Equal(10, result?.Value);
+		Assert.That(result?.Value, Is.EqualTo(10));
 	}
 
-	[Fact]
+	[Test]
 	public void Extension_whenType()
 	{
 		FooExtension value = new BarExtension();
@@ -40,14 +40,14 @@ public class ExtensionTests
 			success = true;
 		});
 
-		Assert.True(success, "whenType failed to cast to type");
+		Assert.That(success, Is.True, "whenType failed to cast to type");
 
 		value.whenType<FooExtension, FormatException>(d =>
 		{
 			success = false;
 		});
 
-		Assert.True(success);
+		Assert.That(success, Is.True);
 	}
 }
 

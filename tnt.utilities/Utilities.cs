@@ -174,7 +174,7 @@ namespace TNT.Utilities
 
 			if (ass != null)
 			{
-				types = (from t in ass.GetTypes() where (filter != null && filter(t)) || filter == null select t).ToList();
+				types = (from t in ass.GetTypes() where filter == null || filter?.Invoke(t) == true select t).ToList();
 			}
 
 			return types.ToArray();
@@ -263,16 +263,14 @@ namespace TNT.Utilities
 			}
 
 			// Load the cursor from the file and delete file
-			Cursor hand = new Cursor(LoadCursorFromFile(path));
+			Cursor cursor = new Cursor(LoadCursorFromFile(path));
 			File.Delete(path);
 
-			return hand;
+			return cursor;
 		}
 
 		[DllImport("user32.dll")]
 		static extern IntPtr LoadCursorFromFile(string lpFileName);
-
-		#region Private methods
 
 		/// <summary>
 		/// Checks if thisBaseType inherits from baseType.
@@ -307,7 +305,5 @@ namespace TNT.Utilities
 
 			return rtnValue;
 		}
-
-		#endregion
 	}
 }
