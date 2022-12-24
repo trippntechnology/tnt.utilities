@@ -3,7 +3,7 @@
 namespace Tests.Resources
 {
 	[ExcludeFromCodeCoverage]
-	public class ExtendedClass2 : BaseClass
+	public class ExtBaseClass2 : BaseClass
 	{
 		public int e2IntProperty { get; set; }
 

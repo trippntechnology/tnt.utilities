@@ -81,34 +81,38 @@ public class UtilitiesTests
 	}
 
 	[Test]
-	public void Utilities_GetTypes_Test()
+	public void Utilities_GetTypes_Test1()
 	{
-		string assemblyFile = $"{AppDomain.CurrentDomain.BaseDirectory}\\TNT.Utilities.dll";
+		var exAss = Assembly.GetExecutingAssembly();
+		Assert.That(exAss, Is.Not.Null);
 
-		var types = Utilities.GetTypes(assemblyFile, t => { return t.Namespace?.StartsWith("TNT.Utilities") ?? false; });
+		var types = Utilities.GetTypes(exAss, t => t.Namespace?.StartsWith("Tests.Resources") ?? false);
+		Assert.That(types?.Length, Is.EqualTo(5));
+	}
 
-		Assert.That(types.Length, Is.EqualTo(15));
-
-		types = Utilities.GetTypes(assemblyFile, t => t.IsVisible);
-
-		Assert.That(types.Length, Is.EqualTo(11));
+	[Test]
+	[Obsolete]
+	public void Utilities_GetTypes_Test2()
+	{
+		string utilitiesAssemblyFile = $"{AppDomain.CurrentDomain.BaseDirectory}\\TNT.Utilities.dll";
+		var types = Utilities.GetTypes(utilitiesAssemblyFile, t => true);
+		Assert.That(types?.Length, Is.EqualTo(19));
 	}
 
 	[Test]
 	public void Utilities_Serialize_Deserialize_Test()
 	{
 		var listClassPre = new ListClass();
-		listClassPre.Add(new ExtendedClass1 { e1IntProperty = 1, e1StringProperty = "one", baseIntProperty = -1, baseStringProperty = "base1" });
-		listClassPre.Add(new ExtendedClass2 { e2IntProperty = 2, e2StringProperty = "two", baseIntProperty = -2, baseStringProperty = "base2" });
+		listClassPre.Add(new ExtBaseClass1 { e1IntProperty = 1, e1StringProperty = "one", baseIntProperty = -1, baseStringProperty = "base1" });
+		listClassPre.Add(new ExtBaseClass2 { e2IntProperty = 2, e2StringProperty = "two", baseIntProperty = -2, baseStringProperty = "base2" });
 
-		var types = new Type[] { typeof(ExtendedClass1), typeof(ExtendedClass2) };
-
+		var types = Utilities.GetTypes(Assembly.GetExecutingAssembly(), t => t.InheritsFrom(typeof(BaseClass)));
 		var str = Utilities.Serialize(listClassPre, types);
 
 		var listClassPost = Utilities.Deserialize<ListClass>(str, types) ?? new ListClass();
 
-		var extClass1 = listClassPost[0] as ExtendedClass1;
-		var extClass2 = listClassPost[1] as ExtendedClass2;
+		var extClass1 = listClassPost[0] as ExtBaseClass1;
+		var extClass2 = listClassPost[1] as ExtBaseClass2;
 
 		Assert.That(extClass1, Is.Not.Null);
 		Assert.That(extClass2, Is.Not.Null);
@@ -122,5 +126,19 @@ public class UtilitiesTests
 		Assert.That(extClass2.e2StringProperty, Is.EqualTo("two"));
 		Assert.That(extClass2.baseIntProperty, Is.EqualTo(-2));
 		Assert.That(extClass2.baseStringProperty, Is.EqualTo("base2"));
+	}
+
+	[Test]
+	public void Utilities_InheritsFrom_Test()
+	{
+		var baseClassType = typeof(BaseClass);
+		var extClass1Type = typeof(ExtBaseClass1);
+		var extExtClass1Type = typeof(ExtExtBaseClass1);
+
+		Assert.IsTrue(extClass1Type.InheritsFrom(baseClassType));
+		Assert.IsTrue(extClass1Type.InheritsFrom(null));
+		Assert.IsTrue(baseClassType.InheritsFrom(baseClassType));
+		Assert.IsTrue(extExtClass1Type.InheritsFrom(baseClassType));
+		Assert.False(typeof(Object).InheritsFrom(baseClassType));
 	}
 }

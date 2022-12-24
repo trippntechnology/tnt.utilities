@@ -167,14 +167,23 @@ namespace TNT.Utilities
 		/// <param name="assemblyName">Name of assembly</param>
 		/// <param name="filter"><see cref="Func{T, TResult}"/> used to filter the types returned</param>
 		/// <returns>Array of types filtered by <paramref name="filter"/></returns>
+		[Obsolete("Call GetTypes(Assembly, Func<Type, bool>) directly.")]
 		public static Type[] GetTypes(string assemblyName, Func<Type, bool> filter)
 		{
-			List<Type> types = new List<Type>();
 			Assembly ass = Assembly.LoadFile(assemblyName);
+			return GetTypes(ass, filter);
+		}
 
-			if (ass != null)
+		/// <summary>
+		/// Returns a list of <see cref="Type"/> matching the <paramref name="filter"/> withing the <paramref name="assembly"/>.
+		/// </summary>
+		public static Type[] GetTypes(Assembly assembly, Func<Type, bool> filter)
+		{
+			List<Type> types = new List<Type>();
+
+			if (assembly != null)
 			{
-				types = (from t in ass.GetTypes() where filter == null || filter?.Invoke(t) == true select t).ToList();
+				types = (from t in assembly.GetTypes() where filter(t) == true select t).ToList();
 			}
 
 			return types.ToArray();
@@ -289,7 +298,7 @@ namespace TNT.Utilities
 			}
 			else
 			{
-				if (thisBaseType == baseType || thisBaseType.BaseType == baseType)
+				if (thisBaseType.FullName == baseType.FullName || thisBaseType.BaseType?.FullName == baseType.FullName)
 				{
 					rtnValue = true;
 				}
