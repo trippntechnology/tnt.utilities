@@ -317,12 +317,8 @@ namespace TNT.Utilities
 		/// <typeparam name="T">Type of objects within list</typeparam>
 		public void WriteList<T>(string name, List<T> list)
 		{
-			try
-			{
-				// Clear the current list
-				BaseRegistryKey.DeleteSubKeyTree(name);
-			}
-			catch { }
+			// Clear the current list
+			BaseRegistryKey.DeleteSubKeyTree(name, false);
 
 			RegistryKey rk = BaseRegistryKey.CreateSubKey(name);
 
@@ -419,7 +415,7 @@ namespace TNT.Utilities
 		/// </summary>
 		/// <param name="name">Name of registry key</param>
 		/// <returns>Byte array</returns>
-		public byte[]? ReadBytes(string name)
+		public byte[] ReadBytes(string name)
 		{
 			return BaseRegistryKey.GetValue(name) as Byte[];
 		}
@@ -433,7 +429,6 @@ namespace TNT.Utilities
 		/// </summary>
 		/// <param name="name">Name of registry key</param>
 		/// <param name="obj">Object to write</param>
-		[Obsolete("BinaryFormatter.Deserialize is Obsolete. It is recommended other serialization methods be used.")]
 		public void WriteObject(string name, object obj)
 		{
 			byte[] bytes = Utilities.ToByteArray(obj);
@@ -446,10 +441,9 @@ namespace TNT.Utilities
 		/// <typeparam name="T">Type of object</typeparam>
 		/// <param name="name">Name of registry key</param>
 		/// <returns>Object from the registry</returns>
-		[Obsolete("BinaryFormatter.Deserialize is Obsolete. It is recommended other serialization methods be used.")]
 		public T? ReadObject<T>(string name)
 		{
-			byte[]? bytes = ReadBytes(name);
+			byte[] bytes = ReadBytes(name);
 			return Utilities.FromByteArray<T>(bytes);
 		}
 

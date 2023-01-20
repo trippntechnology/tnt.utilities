@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using TNT.Utilities.CustomAttributes;
 
 namespace TNT.Utilities
@@ -15,7 +12,7 @@ namespace TNT.Utilities
 		/// <summary>
 		/// List of <seealso cref="PropertyReflector"/>
 		/// </summary>
-		public List<PropertyReflector>? Properties { get; private set; }
+		public List<PropertyReflector> Properties { get; private set; }
 
 		/// <summary>
 		/// Constructor
@@ -23,10 +20,11 @@ namespace TNT.Utilities
 		/// <param name="obj">Object that should be reflected</param>
 		public Reflector(T obj)
 		{
+			Properties = new List<PropertyReflector>();
 			Type? type = obj?.GetType();
 			if (type == null) return;
+			
 			PropertyInfo[] propInfo = type.GetProperties();
-			Properties = new List<PropertyReflector>();
 
 			foreach (PropertyInfo pi in propInfo)
 			{

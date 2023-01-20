@@ -23,8 +23,10 @@ namespace TNT.Utilities
 		/// <returns>True if equal, false otherwise</returns>
 		public override bool Equals(object? obj)
 		{
-			RegistrationKey? regKey = obj as RegistrationKey;
-			return regKey != null && this.Authorization == regKey.Authorization && this.License == regKey.License;
+			var regKey = obj as RegistrationKey;
+			if (regKey == null) return false;
+
+			return this.Authorization == regKey.Authorization && this.License == regKey.License;
 		}
 
 		/// <summary>

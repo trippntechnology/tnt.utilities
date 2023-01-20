@@ -44,6 +44,9 @@ public class UtilitiesTests
 
 		//attr = Utilities.GetAssemblyAttribute<GuidAttribute>(asm);
 		//Assert.AreEqual("eae4b166-b50f-4f09-aa59-23d18cfb4c5a", (attr as GuidAttribute).Value);
+
+		attr = Utilities.GetAssemblyAttribute<AssemblyCultureAttribute>(asm);
+		Assert.That(attr, Is.Null);
 	}
 
 	[Test]
@@ -140,5 +143,14 @@ public class UtilitiesTests
 		Assert.IsTrue(baseClassType.InheritsFrom(baseClassType));
 		Assert.IsTrue(extExtClass1Type.InheritsFrom(baseClassType));
 		Assert.False(typeof(Object).InheritsFrom(baseClassType));
+	}
+
+	[Test]
+	public void Utilities_To_From_ByteArray_Test()
+	{
+		var sut = new BaseClass() { baseIntProperty = 7, baseStringProperty = "seven" };
+		byte[] sutBytes = Utilities.ToByteArray(sut);
+		var newSut = Utilities.FromByteArray<BaseClass>(sutBytes);
+		Assert.That(newSut, Is.EqualTo(sut));
 	}
 }

@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net7.0-windows</TargetFramework>
+		<TargetFramework>net6.0-windows</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<Version>2.0.1</Version>
+		<Version>2.1.0</Version>
 		<Authors>Tripp'n Technology, LLC.</Authors>
 		<PackageProjectUrl></PackageProjectUrl>
 		<Copyright>Copyright 2022 $(Authors)</Copyright>
@@ -19,6 +19,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
 		<PackageReference Include="System.Drawing.Common" Version="6.0.0" />
 		<PackageReference Include="System.Management" Version="6.0.0" />
 	</ItemGroup>
@@ -27,6 +28,7 @@
 		<Exec Command="echo SolutionDir: $(SolutionDir)&#xD;&#xA;echo SolutionExt: $(SolutionExt)&#xD;&#xA;echo SolutionFileName: $(SolutionFileName)&#xD;&#xA;echo SolutionName: $(SolutionName)&#xD;&#xA;echo SolutionPath: $(SolutionPath)&#xD;&#xA;echo ProjectDir: $(ProjectDir)&#xD;&#xA;echo ProjectExt: $(ProjectExt)&#xD;&#xA;echo ProjectFileName: $(ProjectFileName)&#xD;&#xA;echo ProjectName: $(ProjectName)&#xD;&#xA;echo ProjectPath: $(ProjectPath)&#xD;&#xA;echo Configuration: $(Configuration)&#xD;&#xA;echo FrameworkVersion: $(FrameworkVersion)&#xD;&#xA;echo OutDir: $(OutDir)&#xD;&#xA;echo Platform: $(Platform)&#xD;&#xA;echo PlatformShortName: $(PlatformShortName)&#xD;&#xA;&#xD;&#xA;echo TargetDir: $(TargetDir)&#xD;&#xA;echo TargetName: $(TargetName)&#xD;&#xA;echo TargetPath: $(TargetPath)&#xD;&#xA;&#xD;&#xA;echo  copy $(ProjectDir)bin\$(Configuration)\$(ProjectName).$(PackageVersion).nupkg D:\NugetRepo" />
 	</Target>-->
 	<Target Name="DeplyNugetLocal" AfterTargets="Pack" Condition="$(Configuration) == 'Debug_Nuget_Local'">
+		<Exec Command="copy $(ProjectDir)bin\$(Configuration)\$(ProjectName).$(PackageVersion).nupkg D:\NugetRepo" />
 		<Exec Command="copy $(ProjectDir)bin\$(Configuration)\$(ProjectName).$(PackageVersion).symbols.nupkg D:\NugetRepo" />
 	</Target>
 </Project>

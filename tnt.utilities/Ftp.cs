@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Net;
 
 namespace TNT.Utilities
@@ -7,6 +6,7 @@ namespace TNT.Utilities
 	/// <summary>
 	/// Class to handle FTP operations
 	/// </summary>
+	[ExcludeFromCodeCoverage]
 	public class Ftp
 	{
 		/// <summary>

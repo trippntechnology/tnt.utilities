@@ -52,6 +52,14 @@ public class ReflectorTests
 		Assert.That(orderedCats[1], Is.EqualTo("Cat1"));
 		Assert.That(orderedCats[2], Is.EqualTo(""));
 	}
+
+	[Test]
+	public void Null_Constructor_Parameter()
+	{
+		Object? obj = null;
+		Reflector<object?> reflector = new Reflector<Object?>(obj);
+		Assert.That(reflector.Properties.Count, Is.EqualTo(0));
+	}
 }
 
 public enum Enum1

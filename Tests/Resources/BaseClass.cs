@@ -8,5 +8,12 @@ namespace Tests.Resources
 		public int baseIntProperty { get; set; }
 
 		public string? baseStringProperty { get; set; }
+
+		public override bool Equals(object? obj)
+		{
+			var other = obj as BaseClass;
+			if (other == null) return false;
+			return other.baseIntProperty == baseIntProperty && other.baseStringProperty == baseStringProperty;
+		}
 	}
 }

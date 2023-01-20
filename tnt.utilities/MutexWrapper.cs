@@ -1,11 +1,11 @@
-﻿using System;
-using System.Threading;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace TNT.Utilities
 {
 	/// <summary>
 	/// Wraps a <see cref="System.Threading.Mutex"/>
 	/// </summary>
+	[ExcludeFromCodeCoverage]
 	public class MutexWrapper
 	{
 		private Mutex? mutex = null;

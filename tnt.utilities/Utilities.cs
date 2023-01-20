@@ -1,7 +1,7 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -86,21 +86,10 @@ namespace TNT.Utilities
 		/// </summary>
 		/// <param name="obj">Object to convert</param>
 		/// <returns>Byte array representing the object</returns>
-		[Obsolete("BinaryFormatter.Deserialize is Obsolete. It is recommended other serialization methods be used.")]
 		public static byte[] ToByteArray(object obj)
 		{
-			byte[]? bytes = null;
-
-			using (MemoryStream ms = new MemoryStream())
-			{
-				IFormatter formatter = new BinaryFormatter();
-				formatter.Serialize(ms, obj);
-				ms.Position = 0;
-				bytes = new byte[ms.Length];
-				ms.Read(bytes, 0, (int)ms.Length);
-			}
-
-			return bytes;
+			string json = JsonUtilities.serializeObject(obj);
+			return Encoding.UTF8.GetBytes(json);
 		}
 
 		/// <summary>
@@ -109,17 +98,10 @@ namespace TNT.Utilities
 		/// <typeparam name="T">Type of object bytes represent</typeparam>
 		/// <param name="bytes">Byte array of object</param>
 		/// <returns>Object of type T from the byte array</returns>
-		[Obsolete("BinaryFormatter.Deserialize is Obsolete. It is recommended other serialization methods be used.")]
-		public static T? FromByteArray<T>(byte[]? bytes)
+		public static T? FromByteArray<T>(byte[] bytes)
 		{
-			if (bytes == null) return default(T);
-			using (MemoryStream ms = new MemoryStream(bytes))
-			{
-				ms.Position = 0;
-				IFormatter formatter = new BinaryFormatter();
-				T obj = (T)formatter.Deserialize(ms);
-				return obj;
-			}
+			var json = Encoding.UTF8.GetString(bytes);
+			return JsonUtilities.deserializeJson<T>(json);
 		}
 
 		#region GetNameSpaceClasses
@@ -130,6 +112,8 @@ namespace TNT.Utilities
 		/// <param name="nameSpace">Name space were classes reside</param>
 		/// <param name="assemblyName">Assembly where name space exists</param>
 		/// <returns>List of class names contained within a name space</returns>
+		[Obsolete("Use GetTypes(Assembly, Func<Type, bool>)")]
+		[ExcludeFromCodeCoverage]
 		public static List<string> GetNameSpaceClasses(string nameSpace, string assemblyName)
 		{
 			return GetNameSpaceClasses(nameSpace, assemblyName, null);
@@ -142,15 +126,16 @@ namespace TNT.Utilities
 		/// <param name="assemblyName">Assembly where name space exists</param>
 		/// <param name="baseType">Base class of the class names returned</param>
 		/// <returns>List of class names contained within a name space with the specified base type</returns>
+		[Obsolete("Use GetTypes(Assembly, Func<Type, bool>)")]
+		[ExcludeFromCodeCoverage]
 		public static List<string> GetNameSpaceClasses(string nameSpace, string assemblyName, Type? baseType)
 		{
 			List<string> classList = new List<string>();
 			Assembly ass = Assembly.LoadFrom(assemblyName);
 
-			classList.Add(string.Empty);
-
 			if (ass != null)
 			{
+				//classList.AddRange((from t in ass.GetTypes()  select t.UnderlyingSystemType.FullName).ToList<string>());
 				classList.AddRange((from t in ass.GetTypes() where t.Namespace == nameSpace && !t.IsAbstract && t.InheritsFrom(baseType) select t.UnderlyingSystemType.FullName).ToList<string>());
 			}
 
@@ -199,14 +184,9 @@ namespace TNT.Utilities
 		/// <returns>Assembly attribute of the given type if exists, null otherwise</returns>
 		public static T? GetAssemblyAttribute<T>(Assembly assembly) where T : Attribute
 		{
-			if (assembly == null)
-			{
-				return default;
-			}
-
 			object[] attributes = assembly.GetCustomAttributes(typeof(T), true);
 
-			if (attributes == null || attributes.Length == 0)
+			if (attributes.Length == 0)
 			{
 				return default;
 			}
@@ -219,6 +199,7 @@ namespace TNT.Utilities
 		/// </summary>
 		/// <param name="splitButton">Button to add listing</param>
 		/// <param name="fileName">Location of listing</param>
+		[ExcludeFromCodeCoverage]
 		public static void UpdateMRUListing(ToolStripSplitButton splitButton, string fileName)
 		{
 			// Add latest file
@@ -250,6 +231,7 @@ namespace TNT.Utilities
 		/// </summary>
 		/// <param name="resourceName">Reference to the resource</param>
 		/// <returns>Cursor</returns>
+		[ExcludeFromCodeCoverage]
 		public static Cursor? LoadColorCursor(string resourceName)
 		{
 			// Get the name of a temporary file

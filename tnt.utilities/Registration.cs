@@ -1,4 +1,5 @@
-﻿using System.Management;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Management;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -29,6 +30,7 @@ namespace TNT.Utilities
 		/// Returns the serial number for the first local fixed disk
 		/// </summary>
 		/// <returns>Serial number for the first local fixed disk</returns>
+		[ExcludeFromCodeCoverage]
 		public static string GetVolumeSerialNumber()
 		{
 			string result = string.Empty;
@@ -117,6 +119,7 @@ namespace TNT.Utilities
 		/// </summary>
 		/// <param name="regKey"><see cref="RegistrationKey"/></param>
 		/// <param name="fileName">Location of file</param>
+		[ExcludeFromCodeCoverage]
 		public static void SetRegistrationKey(RegistrationKey regKey, string fileName)
 		{
 			Utilities.SerializeToFile<RegistrationKey>(regKey, fileName);
@@ -127,6 +130,7 @@ namespace TNT.Utilities
 		/// </summary>
 		/// <param name="fileName">Location of file</param>
 		/// <returns><see cref="RegistrationKey"/></returns>
+		[ExcludeFromCodeCoverage]
 		public static RegistrationKey? GetRegistrationKey(string fileName)
 		{
 			return Utilities.DeserializeFromFile<RegistrationKey>(fileName);
