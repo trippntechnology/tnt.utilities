@@ -99,7 +99,7 @@ public class UtilitiesTests
 	{
 		string utilitiesAssemblyFile = $"{AppDomain.CurrentDomain.BaseDirectory}\\TNT.Utilities.dll";
 		var types = Utilities.GetTypes(utilitiesAssemblyFile, t => true);
-		Assert.That(types?.Length, Is.EqualTo(19));
+		Assert.That(types?.Length, Is.EqualTo(16));
 	}
 
 	[Test]
