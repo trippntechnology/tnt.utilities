@@ -90,7 +90,7 @@ public class UtilitiesTests
 		Assert.That(exAss, Is.Not.Null);
 
 		var types = Utilities.GetTypes(exAss, t => t.Namespace?.StartsWith("Tests.Resources") ?? false);
-		Assert.That(types?.Length, Is.EqualTo(5));
+		Assert.That(types?.Length, Is.EqualTo(6));
 	}
 
 	[Test]
