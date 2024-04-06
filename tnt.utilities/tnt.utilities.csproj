@@ -16,11 +16,12 @@
 		<Company>$(Authors)</Company>
 		<IncludeSymbols>True</IncludeSymbols>
 		<SymbolPackageFormat>symbols.nupkg</SymbolPackageFormat>
+		<Title>TNT Utilities</Title>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageReference Include="System.Drawing.Common" Version="8.0.1" />
+		<PackageReference Include="System.Drawing.Common" Version="8.0.3" />
 		<PackageReference Include="System.Management" Version="8.0.0" />
 	</ItemGroup>
 
