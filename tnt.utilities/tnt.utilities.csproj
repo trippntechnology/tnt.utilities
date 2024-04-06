@@ -8,7 +8,7 @@
 		<Version>2.1.1</Version>
 		<Authors>Tripp'n Technology, LLC.</Authors>
 		<PackageProjectUrl></PackageProjectUrl>
-		<Copyright>Copyright 2022 $(Authors)</Copyright>
+		<Copyright>Copyright 2024 $(Authors)</Copyright>
 		<UseWindowsForms>true</UseWindowsForms>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<Configurations>Debug;Release;Debug_Nuget_Local</Configurations>
