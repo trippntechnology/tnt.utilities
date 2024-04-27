@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.31911.260
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tnt.Utilities", "tnt.utilities\Tnt.Utilities.csproj", "{A20FC895-3C73-44C3-9522-35B270A82B97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TNT.Utilities", "TNT.Utilities\TNT.Utilities.csproj", "{A20FC895-3C73-44C3-9522-35B270A82B97}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{5B3BBFBC-435D-4FEF-84DA-585E9BF44371}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NUnitTests", "Tests\NUnitTests.csproj", "{5B3BBFBC-435D-4FEF-84DA-585E9BF44371}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

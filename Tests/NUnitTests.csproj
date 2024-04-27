@@ -49,7 +49,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\tnt.utilities\Tnt.Utilities.csproj" />
+    <ProjectReference Include="..\TNT.Utilities\TNT.Utilities.csproj" />
   </ItemGroup>
 
 </Project>
