@@ -1,27 +1,33 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net8.0-windows</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<Version>2.1.1</Version>
 		<Authors>Tripp'n Technology, LLC.</Authors>
-		<Copyright>Copyright 2024 $(Authors)</Copyright>
-		<UseWindowsForms>true</UseWindowsForms>
-		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<Description>TNT Utility Classes</Description>
 		<Company>$(Authors)</Company>
-		<IncludeSymbols>True</IncludeSymbols>
-		<SymbolPackageFormat>symbols.nupkg</SymbolPackageFormat>
-		<Title>TNT Utilities</Title>
+		<ContinuousIntegrationBuild>True</ContinuousIntegrationBuild>
+		<Copyright>Copyright 2024 $(Authors)</Copyright>
 		<DebugType>embedded</DebugType>
+		<Description>TNT Utility Classes</Description>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<IncludeSymbols>False</IncludeSymbols>
+		<Nullable>enable</Nullable>
+		<PackageReadmeFile>readme.md</PackageReadmeFile>
+		<SymbolPackageFormat>symbols.nupkg</SymbolPackageFormat>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<Title>TNT Utilities</Title>
+		<UseWindowsForms>true</UseWindowsForms>
+		<Version>2.1.1</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="System.Drawing.Common" Version="8.0.3" />
 		<PackageReference Include="System.Management" Version="8.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="docs\readme.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 	<Target Name="DeplyNugetLocal" AfterTargets="Pack" Condition="$(Configuration) == 'Release'">
