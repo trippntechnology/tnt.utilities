@@ -11,7 +11,7 @@ public class UtilitiesTests
   [Test]
   public void Utilities_GetAssemblyAttribute_Test()
   {
-    Assembly asm = Assembly.LoadFrom(@"tests.dll");
+    Assembly asm = Assembly.LoadFrom(@"nunittests.dll");
 
     Assert.That(asm, Is.Not.Null);
 
@@ -34,7 +34,7 @@ public class UtilitiesTests
     //Assert.AreEqual("3.3.3.3", (attr as AssemblyInformationalVersionAttribute).InformationalVersion);
 
     attr = Utilities.GetAssemblyAttribute<AssemblyTitleAttribute>(asm);
-    Assert.That((attr as AssemblyTitleAttribute)?.Title, Is.EqualTo("Tests"));
+    Assert.That((attr as AssemblyTitleAttribute)?.Title, Is.EqualTo("NUnitTests"));
 
     //attr = Utilities.GetAssemblyAttribute<AssemblyVersionAttribute>(asm);
     //Assert.AreEqual("3.3.3.3", (attr as AssemblyVersionAttribute).Version);
