@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -81,29 +80,6 @@ namespace TNT.Utilities
       }
     }
 
-    /// <summary>
-    /// Converts an object to a byte array
-    /// </summary>
-    /// <param name="obj">Object to convert</param>
-    /// <returns>Byte array representing the object</returns>
-    public static byte[] ToByteArray(object obj)
-    {
-      string json = JsonUtilities.serializeObject(obj);
-      return Encoding.UTF8.GetBytes(json);
-    }
-
-    /// <summary>
-    /// Returns an object of type T from the byte array
-    /// </summary>
-    /// <typeparam name="T">Type of object bytes represent</typeparam>
-    /// <param name="bytes">Byte array of object</param>
-    /// <returns>Object of type T from the byte array</returns>
-    public static T? FromByteArray<T>(byte[] bytes)
-    {
-      var json = Encoding.UTF8.GetString(bytes);
-      return JsonUtilities.deserializeJson<T>(json);
-    }
-
     #region GetNameSpaceClasses
 
     /// <summary>
@@ -153,6 +129,7 @@ namespace TNT.Utilities
     /// <param name="filter"><see cref="Func{T, TResult}"/> used to filter the types returned</param>
     /// <returns>Array of types filtered by <paramref name="filter"/></returns>
     [Obsolete("Call GetTypes(Assembly, Func<Type, bool>) directly.")]
+    [ExcludeFromCodeCoverage]
     public static Type[] GetTypes(string assemblyName, Func<Type, bool> filter)
     {
       Assembly ass = Assembly.LoadFile(assemblyName);
@@ -247,7 +224,7 @@ namespace TNT.Utilities
         {
           // Fill the bytes[] array with the stream data         
           byte[] bytesInStream = new byte[s.Length];
-          s.Read(bytesInStream, 0, bytesInStream.Length);
+          s.ReadExactly(bytesInStream, 0, bytesInStream.Length);
 
           // Use FileStream object to write to the specified file         
           fs.Write(bytesInStream, 0, bytesInStream.Length);

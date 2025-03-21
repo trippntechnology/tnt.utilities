@@ -290,6 +290,10 @@ public class ApplicationRegistryTests
       TestObject? newTO = appReg.ReadObject<TestObject>(keyName);
 
       Assert.That(newTO, Is.EqualTo(to));
+
+      appReg.WriteString(keyName, "Invalid Object");
+      newTO = appReg.ReadObject<TestObject>(keyName);
+      Assert.That(newTO, Is.Null);
     }
     catch (Exception ex)
     {

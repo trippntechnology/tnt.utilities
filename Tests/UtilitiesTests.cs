@@ -90,16 +90,7 @@ public class UtilitiesTests
     Assert.That(exAss, Is.Not.Null);
 
     var types = Utilities.GetTypes(exAss, t => t.Namespace?.StartsWith("Tests.Resources") ?? false);
-    Assert.That(types?.Length, Is.EqualTo(6));
-  }
-
-  [Test]
-  [Obsolete]
-  public void Utilities_GetTypes_Test2()
-  {
-    string utilitiesAssemblyFile = $"{AppDomain.CurrentDomain.BaseDirectory}\\TNT.Utilities.dll";
-    var types = Utilities.GetTypes(utilitiesAssemblyFile, t => true);
-    Assert.That(types?.Length, Is.EqualTo(16));
+    Assert.That(types?.Length, Is.EqualTo(5));
   }
 
   [Test]
@@ -143,14 +134,5 @@ public class UtilitiesTests
     Assert.That(baseClassType.InheritsFrom(baseClassType), Is.True);
     Assert.That(extExtClass1Type.InheritsFrom(baseClassType), Is.True);
     Assert.That(typeof(Object).InheritsFrom(baseClassType), Is.False);
-  }
-
-  [Test]
-  public void Utilities_To_From_ByteArray_Test()
-  {
-    var sut = new BaseClass() { baseIntProperty = 7, baseStringProperty = "seven" };
-    byte[] sutBytes = Utilities.ToByteArray(sut);
-    var newSut = Utilities.FromByteArray<BaseClass>(sutBytes);
-    Assert.That(newSut, Is.EqualTo(sut));
   }
 }

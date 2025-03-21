@@ -1,5 +1,7 @@
 ﻿using Microsoft.Win32;
+using Newtonsoft.Json;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 
 namespace TNT.Utilities;
 
@@ -432,8 +434,8 @@ public class ApplicationRegistry
   /// <param name="obj">Object to write</param>
   public void WriteObject(string name, object obj)
   {
-    byte[] bytes = Utilities.ToByteArray(obj);
-    WriteBytes(name, bytes);
+    var serializedObj = JsonConvert.SerializeObject(obj);
+    WriteBytes(name, Encoding.UTF8.GetBytes(serializedObj));
   }
 
   /// <summary>
@@ -446,7 +448,8 @@ public class ApplicationRegistry
   {
     byte[]? bytes = ReadBytes(name);
     if (bytes == null) return default(T);
-    return Utilities.FromByteArray<T>(bytes);
+    var serializedObj = Encoding.UTF8.GetString(bytes);
+    return JsonConvert.DeserializeObject<T>(serializedObj);
   }
 
   #endregion

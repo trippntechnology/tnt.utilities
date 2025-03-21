@@ -1,19 +1,29 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Tests.Resources
+namespace Tests.Resources;
+
+[ExcludeFromCodeCoverage]
+public class BaseClass
 {
-  [ExcludeFromCodeCoverage]
-  public class BaseClass
+  public int baseIntProperty { get; set; } = 0;
+
+  public string? baseStringProperty { get; set; } = null;
+
+  public override bool Equals(object? obj)
   {
-    public int baseIntProperty { get; set; } = 0;
+    var other = obj as BaseClass;
+    if (other == null) return false;
+    return other.baseIntProperty == baseIntProperty && other.baseStringProperty == baseStringProperty;
+  }
 
-    public string? baseStringProperty { get; set; } = null;
-
-    public override bool Equals(object? obj)
+  public override int GetHashCode()
+  {
+    unchecked // Allow arithmetic overflow, just wrap around
     {
-      var other = obj as BaseClass;
-      if (other == null) return false;
-      return other.baseIntProperty == baseIntProperty && other.baseStringProperty == baseStringProperty;
+      int hash = 17;
+      hash = hash * 23 + baseIntProperty.GetHashCode();
+      hash = hash * 23 + (baseStringProperty?.GetHashCode() ?? 0);
+      return hash;
     }
   }
 }
