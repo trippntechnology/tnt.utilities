@@ -1,48 +1,32 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0-windows7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-
-    <IsPackable>false</IsPackable>
-
-    <Company>Company</Company>
-
-    <Copyright>Copyright</Copyright>
-
-    <Description>Description</Description>
-
-    <FileVersion>3.3.3.3</FileVersion>
-
-    <PackageId>Package ID</PackageId>
-
-    <Product>Product</Product>
-
-    <Version>1.1.1.1</Version>
-
-    <Authors>Authors</Authors>
-
-    <PackageProjectUrl>URL</PackageProjectUrl>
-
     <AssemblyVersion>2.2.2.2</AssemblyVersion>
-
+    <Authors>Authors</Authors>
+    <Company>Company</Company>
     <Configurations>Debug;Release;Debug_Nuget_Local</Configurations>
+    <Copyright>Copyright</Copyright>
+    <Description>Description</Description>
+    <FileVersion>3.3.3.3</FileVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+    <Nullable>enable</Nullable>
+    <PackageId>Package ID</PackageId>
+    <PackageProjectUrl>URL</PackageProjectUrl>
+    <Product>Product</Product>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <Version>1.1.1.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ReflectionUtilsTests.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
-    <PackageReference Include="NUnit" Version="4.1.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
-    <PackageReference Include="NUnit.Analyzers" Version="4.1.0">
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
+    <PackageReference Include="NUnit" Version="4.3.2" />
+    <PackageReference Include="NUnit3TestAdapter" Version="5.0.0" />
+    <PackageReference Include="NUnit.Analyzers" Version="4.6.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="coverlet.collector" Version="6.0.2">
+    <PackageReference Include="coverlet.collector" Version="6.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

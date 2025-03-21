@@ -4,7 +4,7 @@
 		<Authors>Tripp'n Technology, LLC.</Authors>
 		<Company>$(Authors)</Company>
 		<ContinuousIntegrationBuild>True</ContinuousIntegrationBuild>
-		<Copyright>Copyright 2024 $(Authors)</Copyright>
+		<Copyright>Copyright 2025 $(Authors)</Copyright>
 		<DebugType>embedded</DebugType>
 		<Description>TNT Utility Classes</Description>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -14,16 +14,16 @@
 		<Nullable>enable</Nullable>
 		<PackageReadmeFile>readme.md</PackageReadmeFile>
 		<SymbolPackageFormat>symbols.nupkg</SymbolPackageFormat>
-		<TargetFramework>net8.0-windows</TargetFramework>
+		<TargetFramework>net9.0-windows</TargetFramework>
 		<Title>TNT Utilities</Title>
 		<UseWindowsForms>true</UseWindowsForms>
-		<Version>2.1.1</Version>
+		<Version>3.0.0</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageReference Include="System.Drawing.Common" Version="8.0.3" />
-		<PackageReference Include="System.Management" Version="8.0.0" />
+		<PackageReference Include="System.Drawing.Common" Version="9.0.3" />
+		<PackageReference Include="System.Management" Version="9.0.3" />
 	</ItemGroup>
 
 	<ItemGroup>
